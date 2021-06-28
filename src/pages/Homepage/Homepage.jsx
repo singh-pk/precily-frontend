@@ -1,33 +1,54 @@
-import { useState } from 'react';
+import { connect } from 'react-redux';
+
 import ResizingDiv from '../../components/ResizingDiv/ResizingDiv';
-import WithInputRef from '../../components/WithInputRef/WithInputRef';
+import WithImageContainer from '../../components/WithImageContainer/WithImageContainer';
+import WithSpinner from '../../components/WithSpinner/WithSpinner';
+import { selectIsFetchingById } from '../../redux/containerData/containerDataSelector';
 
 import homepageStyles from './Homepage.module.scss';
 
-const Homepage = () => {
-  const [height, setHeight] = useState(250);
-  let ResizingDivWithInputRef = WithInputRef(ResizingDiv);
+const Homepage = ({ isFetchingById }) => {
+  let ResizingDivWithImageContainer1 = WithSpinner(
+    WithImageContainer(ResizingDiv)
+  );
+
+  let ResizingDivWithImageContainer2 = WithSpinner(
+    WithImageContainer(ResizingDiv)
+  );
+  let ResizingDivWithImageContainer3 = WithSpinner(
+    WithImageContainer(ResizingDiv)
+  );
 
   return (
     <div className={homepageStyles.homepage}>
       <div>
-        <ResizingDivWithInputRef bottom right setHeight={setHeight}>
-          Hi
-        </ResizingDivWithInputRef>
-
-        <ResizingDiv
+        <ResizingDivWithImageContainer1
+          isLoading={isFetchingById === 0}
           bottom
-          height={height}
+          right
+          containerId={0}
+        />
+
+        <ResizingDivWithImageContainer2
+          isLoading={isFetchingById === 1}
+          bottom
           style={{ flex: 1 }}
-          setHeight={setHeight}
-        >
-          Hi
-        </ResizingDiv>
+          containerId={1}
+        />
       </div>
 
-      <div className={homepageStyles.lastContainer}>Hi</div>
+      <ResizingDivWithImageContainer3
+        isLoading={isFetchingById === 2}
+        minWidth='100%'
+        style={{ flex: 1 }}
+        containerId={2}
+      />
     </div>
   );
 };
 
-export default Homepage;
+const mapStateToProps = state => ({
+  isFetchingById: selectIsFetchingById(state),
+});
+
+export default connect(mapStateToProps)(Homepage);

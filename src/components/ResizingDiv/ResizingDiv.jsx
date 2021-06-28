@@ -1,7 +1,14 @@
-import { useState } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import ResizingDivStyles from './ResizingDivStyles';
 import Resizer from '../Resizer/Resizer';
+
+import { setHeight, setWidth } from '../../redux/splitsView/splitsViewAction';
+import {
+  selectSplitsViewHeight,
+  selectSplitsViewWidth,
+} from '../../redux/splitsView/splitsViewSelector';
 
 const ResizingDiv = ({
   top,
@@ -14,11 +21,12 @@ const ResizingDiv = ({
   maxHeight,
   height,
   setHeight,
+  width,
+  style,
+  setWidth,
   children,
   ...otherProps
 }) => {
-  const [width, setWidth] = useState(maxWidth || 450);
-
   let sides = [];
 
   if (top) sides = [...sides, 'top'];
@@ -26,14 +34,15 @@ const ResizingDiv = ({
   if (right) sides = [...sides, 'right'];
   if (left) sides = [...sides, 'left'];
 
+  let styleObj = { height, width, ...style };
+
   return (
     <ResizingDivStyles
       minWidth={minWidth}
       minHeight={minHeight}
       maxWidth={maxWidth}
       maxHeight={maxHeight}
-      height={height}
-      width={width}
+      style={styleObj}
       {...otherProps}
     >
       {sides.map(side => (
@@ -43,6 +52,8 @@ const ResizingDiv = ({
           setDimension={
             side === 'top' || side === 'bottom' ? setHeight : setWidth
           }
+          height={height}
+          width={width}
         />
       ))}
 
@@ -51,4 +62,14 @@ const ResizingDiv = ({
   );
 };
 
-export default ResizingDiv;
+const mapStateToProps = createStructuredSelector({
+  height: selectSplitsViewHeight,
+  width: selectSplitsViewWidth,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setHeight: height => dispatch(setHeight(height)),
+  setWidth: width => dispatch(setWidth(width)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResizingDiv);

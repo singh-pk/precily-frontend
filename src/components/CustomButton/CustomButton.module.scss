@@ -1,0 +1,27 @@
+@import '../../main';
+
+.btn {
+  height: 2rem;
+  width: 8rem;
+  position: absolute;
+  top: calc(50% - 1rem);
+  left: calc(50% - 4rem);
+  z-index: 5;
+
+  padding: unset;
+  border-radius: 2rem;
+  border: $border;
+
+  transition: transform 0.15s linear;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+}

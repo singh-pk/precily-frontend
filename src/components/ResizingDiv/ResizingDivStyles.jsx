@@ -6,8 +6,6 @@ const ResizingDivStyles = styled.div`
   min-height: ${({ minHeight }) => minHeight};
   max-width: ${({ maxWidth }) => maxWidth || '100%'};
   max-height: ${({ maxHeight }) => maxHeight || '100%'};
-  width: ${({ width }) => width && `${width}px`};
-  height: ${({ height }) => height && `${height}px`};
   overflow: hidden;
   position: relative;
 `;

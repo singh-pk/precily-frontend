@@ -1,9 +1,8 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import ResizerStyles from './ResizerStyles';
 
-const Resizer = ({ side, setDimension }) => {
-  const resizerRef = useRef(null);
+const Resizer = ({ side, height, width, setDimension }) => {
   const [dragging, setDragging] = useState(false);
   const [initialPos, setInitialPos] = useState(null);
 
@@ -54,9 +53,12 @@ const Resizer = ({ side, setDimension }) => {
       let newPos = clientPos - initialPos;
 
       setInitialPos(clientPos);
-      setDimension(prevDim =>
-        prevDim + newPos > 22 ? prevDim + newPos : prevDim
-      );
+
+      if (selectedClient === 'clientY') {
+        setDimension(height + newPos > 22 ? height + newPos : height);
+      } else {
+        setDimension(width + newPos > 22 ? width + newPos : width);
+      }
     }
   };
 
@@ -66,19 +68,17 @@ const Resizer = ({ side, setDimension }) => {
       document.addEventListener('touchmove', onTouchMove);
       document.addEventListener('mouseup', onMouseUp);
       document.addEventListener('touchend', onMouseUp);
-    } else {
-      removeEventListeners();
     }
 
     return () => {
-      return removeEventListeners();
+      removeEventListeners();
     };
 
     // eslint-disable-next-line
   }, [onMouseDown, onTouchStart]);
+
   return (
     <ResizerStyles
-      ref={resizerRef}
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
       side={side}
