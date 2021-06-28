@@ -10,3 +10,5 @@ export const addImage = (containerId, imageUrl) =>
 
 export const updateImage = (containerId, imageUrl) =>
   instance.put('/v1/updateImage', { containerId, imageUrl });
+
+export const getTotalCount = () => instance.get('/v1/getTotalCount');

@@ -1,9 +1,11 @@
 import customButtonStyles from './CustomButton.module.scss';
 
-const CustomButton = ({ handleClick, children, ...otherProps }) => {
+const CustomButton = ({ handleClick, children, btnFixed, ...otherProps }) => {
   return (
     <button
-      className={customButtonStyles.btn}
+      className={`${customButtonStyles.btn} ${
+        btnFixed && customButtonStyles.btnFixed
+      }`}
       onClick={handleClick}
       {...otherProps}
     >

@@ -24,4 +24,12 @@
     pointer-events: none;
     opacity: 0.6;
   }
+
+  &.btnFixed {
+    top: unset;
+    left: unset;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+  }
 }
