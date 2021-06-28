@@ -1,7 +1,10 @@
+import persistData from '../../utils/persistData';
+import getPersistedData from '../../utils/getPersistedData';
+
 import ContainerDataTypes from './containerDataTypes';
 
 const INITIAL_STATE = {
-  containerById: {},
+  containerById: getPersistedData('containerData') || {},
   isFetchingById: null,
   error: null,
 };
@@ -16,15 +19,18 @@ const containerDataReducer = (state = INITIAL_STATE, action) => {
         error: null,
       };
     case ContainerDataTypes.SET_IMG_SUCCESS:
+      let data = { ...state.containerById, ...action.payload };
+      persistData('containerData', data);
       return {
         ...state,
-        containerById: { ...state.containerById, ...action.payload },
+        containerById: data,
         isFetchingById: null,
         error: null,
       };
     case ContainerDataTypes.UPDATE_IMG_SUCCESS:
       let copy = state.containerById;
       copy[action.payload.containerId] = action.payload.imageUrl;
+      persistData('containerData', copy);
       return {
         ...state,
         containerById: copy,
